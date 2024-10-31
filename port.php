@@ -63,23 +63,29 @@
       const port = document.getElementById("port-input").value;
       const infoCard = document.getElementById("info-card");
       const loader = document.getElementById("loader");
-      
+
       if (ip.trim() !== "" && port.trim() !== "") {
         infoCard.style.display = "flex"; // Show the info card
         loader.style.display = "block"; // Show the loader
-console.log("hitted");
+
+        console.log("hitted");
+
         // Check port status
         fetch(`http://localhost:3000/?ip=${ip}&port=${port}`)
 
           .then(response => response.json())
           .then(data => {
-            
+
             document.getElementById("ip").textContent = ip;
-            console.log(ip);
+            
             document.getElementById("port").textContent = port;
-            console.log(port);
-            document.getElementById("status").textContent = data.open ? 
-              `Port ${port} is open on ${ip}.` : 
+            
+            console.log("IP:", ip);
+      console.log("Port:", port);
+
+
+            document.getElementById("status").textContent = data.open ?
+              `Port ${port} is open on ${ip}.` :
               `Port ${port} is closed on ${ip}.`;
 
             loader.style.display = "none"; // Hide the loader
@@ -111,8 +117,13 @@ console.log("hitted");
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </body>

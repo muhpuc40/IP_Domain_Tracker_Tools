@@ -1,7 +1,11 @@
-// server.js
 const http = require('http');
 const net = require('net');
-const url = require('url');
+const cors = require('cors');
+const express = require('express');
+const app = express();
+
+// Enable CORS
+app.use(cors());
 
 // Function to check if a port is open
 function checkPort(ip, port) {
@@ -25,25 +29,36 @@ function checkPort(ip, port) {
     });
 }
 
-// Create an HTTP server
-const server = http.createServer(async (req, res) => {
-    const query = url.parse(req.url, true).query;
-    const ip = query.ip;
-    const port = parseInt(query.port, 10);
+// Route to check the port status
+app.get('/', async (req, res) => {
+    const ip = req.query.ip;
+    const port = parseInt(req.query.port, 10);
 
     if (!ip || isNaN(port)) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid IP or port' }));
+        res.status(400).json({ error: 'Invalid IP or port' });
+        console.log(`\x1b[31m[ERROR]\x1b[0m Invalid request received: IP - ${ip}, Port - ${port}`);
         return;
     }
 
+    // Log the received request in styled format
+    console.log(`\n\x1b[36m[REQUEST RECEIVED]\x1b[0m Checking IP: \x1b[33m${ip}\x1b[0m, Port: \x1b[33m${port}\x1b[0m`);
+
     const isOpen = await checkPort(ip, port);
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ open: isOpen }));
+
+    // Styled result based on the port status
+    if (isOpen) {
+        console.log(`\x1b[32m[RESULT]\x1b[0m Port ${port} on IP ${ip} is \x1b[32mOPEN\x1b[0m.`);
+    } else {
+        console.log(`\x1b[31m[RESULT]\x1b[0m Port ${port} on IP ${ip} is \x1b[31mCLOSED\x1b[0m.`);
+    }
+
+    res.json({ open: isOpen });
 });
 
-// Start the server
+// Start the server with a styled console log
 const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`\n\x1b[34m............................................\x1b[0m`);
+    console.log(`\x1b[34mServer is running on http://localhost:${PORT}\x1b[0m`);
+    console.log(`\x1b[34m............................................\x1b[0m`);
 });
