@@ -37,12 +37,12 @@
               <span class="navlink_icon">
                 <i class="bx bx-grid-alt"></i>
               </span>
-              <span class="navlink">DNS Tools</span>
+              <span class="navlink">DNS Check Tools</span>
               <i class="bx bx-chevron-right arrow-left"></i>
             </div>
 
             <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="DNS_Check_Tools/public" class="nav_link sublink">DNS Health Report</a>
               <a href="#" class="nav_link sublink">Nav Sub Link</a>
 
             </ul>
